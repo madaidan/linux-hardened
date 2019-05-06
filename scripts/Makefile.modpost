@@ -54,6 +54,7 @@ MODPOST = scripts/mod/modpost								\
 	$(if $(KBUILD_EXTMOD),-o $(modulesymfile))					\
 	$(if $(CONFIG_SECTION_MISMATCH_WARN_ONLY),,-E)					\
 	$(if $(CONFIG_MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS)$(KBUILD_NSDEPS),-N) 	\
+	$(if $(CONFIG_DEBUG_WRITABLE_FUNCTION_POINTERS_VERBOSE),-f)			\
 	$(if $(KBUILD_MODPOST_WARN),-w)
 
 ifdef MODPOST_VMLINUX
