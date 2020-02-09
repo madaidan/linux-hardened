@@ -82,6 +82,7 @@
 #include <net/mptcp.h>
 
 int sysctl_tcp_max_orphans __read_mostly = NR_FILE;
+int sysctl_tcp_simult_connect __read_mostly = 0;
 
 #define FLAG_DATA		0x01 /* Incoming frame contained data.		*/
 #define FLAG_WIN_UPDATE		0x02 /* Incoming ACK was a window update.	*/
@@ -316,7 +317,7 @@ static void tcp_ecn_rcv_synack(struct tcp_sock *tp, const struct tcphdr *th)
 
 static void tcp_ecn_rcv_syn(struct tcp_sock *tp, const struct tcphdr *th)
 {
-	if ((tp->ecn_flags & TCP_ECN_OK) && (!th->ece || !th->cwr))
+	if ((tp->ecn_flags & TCP_ECN_OK) && (!th->ece || !th->cwr) && sysctl_tcp_simult_connect)
 		tp->ecn_flags &= ~TCP_ECN_OK;
 }
 
@@ -6054,7 +6055,7 @@ discard:
 	    tcp_paws_reject(&tp->rx_opt, 0))
 		goto discard_and_undo;
 
-	if (th->syn) {
+	if (th->syn && sysctl_tcp_simult_connect) {
 		/* We see SYN without ACK. It is attempt of
 		 * simultaneous connect with crossed SYNs.
 		 * Particularly, it can be connect to self.
