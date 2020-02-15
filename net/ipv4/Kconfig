@@ -742,7 +742,7 @@ config TCP_MD5SIG
 
 config TCP_SIMULT_CONNECT_DEFAULT_ON
 	bool "Enable TCP simultaneous connect"
-	default n
+	default y
 	help
 	  Enable TCP simultaneous connect that adds a weakness
 	  in Linux's strict implementation of TCP that allows two
@@ -763,4 +763,4 @@ config TCP_SIMULT_CONNECT_DEFAULT_ON
 	  This setting can be overridden at runtime via the
 	  net.ipv4.tcp_simult_connect sysctl.
 
-	  If unsure, say N.
+	  If unsure, say Y.
