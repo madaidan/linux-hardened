@@ -1311,6 +1311,16 @@ static inline int perf_allow_open(struct perf_event_attr *attr)
 	return security_perf_event_open(attr, PERF_SECURITY_OPEN);
 }
 
+static inline bool perf_paranoid_any(void)
+{
+	return sysctl_perf_event_paranoid > 2;
+}
+
+static inline bool perf_paranoid_all(void)
+{
+	return sysctl_perf_event_paranoid > 3;
+}
+
 static inline int perf_allow_kernel(struct perf_event_attr *attr)
 {
 	if (sysctl_perf_event_paranoid > 1 && !capable(CAP_SYS_ADMIN))

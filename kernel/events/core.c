@@ -401,6 +401,7 @@ static cpumask_var_t perf_online_mask;
  *   1 - disallow cpu events for unpriv
  *   2 - disallow kernel profiling for unpriv
  *   3 - disallow all unpriv perf event use
+ *   4 - disallow all perf event use
  */
 #ifdef CONFIG_SECURITY_PERF_EVENTS_RESTRICT
 int sysctl_perf_event_paranoid __read_mostly = 3;
@@ -11471,6 +11472,12 @@ SYSCALL_DEFINE5(perf_event_open,
 	/* for future expandability... */
 	if (flags & ~PERF_FLAG_ALL)
 		return -EINVAL;
+
+	if (perf_paranoid_all())
+		return -EACCES;
+
+	if (perf_paranoid_any() && !capable(CAP_SYS_ADMIN))
+		return -EACCES;
 
 	/* Do we allow access to perf_event_open(2) ? */
 	err = perf_allow_open(&attr);
