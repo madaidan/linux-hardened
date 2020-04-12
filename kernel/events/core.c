@@ -11473,12 +11473,6 @@ SYSCALL_DEFINE5(perf_event_open,
 	if (flags & ~PERF_FLAG_ALL)
 		return -EINVAL;
 
-	if (perf_paranoid_all())
-		return -EACCES;
-
-	if (perf_paranoid_any() && !capable(CAP_SYS_ADMIN))
-		return -EACCES;
-
 	/* Do we allow access to perf_event_open(2) ? */
 	err = perf_allow_open(&attr);
 	if (err)
