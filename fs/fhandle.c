@@ -10,6 +10,7 @@
 #include <linux/fsnotify.h>
 #include <linux/personality.h>
 #include <linux/uaccess.h>
+#include <linux/hardened.h>
 #include <linux/compat.h>
 #include "internal.h"
 #include "mount.h"
@@ -177,7 +178,7 @@ static int handle_to_path(int mountdirfd, struct file_handle __user *ufh,
 	 * the directory. Ideally we would like CAP_DAC_SEARCH.
 	 * But we don't have that
 	 */
-	if (!capable(CAP_DAC_READ_SEARCH)) {
+	if (!capable(CAP_DAC_READ_SEARCH) || !chroot_fhandle()) {
 		retval = -EPERM;
 		goto out_err;
 	}

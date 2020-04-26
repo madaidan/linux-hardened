@@ -23,6 +23,11 @@ struct shmid_kernel /* private to the kernel */
 	/* The task created the shm object.  NULL if the task is dead. */
 	struct task_struct	*shm_creator;
 	struct list_head	shm_clist;	/* list by creator */
+
+#ifdef CONFIG_HARDENED
+        u64                     shm_createtime;
+        pid_t                   shm_lapid;
+#endif
 } __randomize_layout;
 
 /* shm_mode upper byte flags */
