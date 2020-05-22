@@ -62,6 +62,11 @@ config SECURITY_HARDEN_IPC
 	  who found hundreds of such insecure usages. Processes with
 	  CAP_IPC_OWNER are still permitted to access these IPC objects.
 
+	  This setting can be overridden at runtime via the kernel.harden_ipc
+	  sysctl.
+
+	  If unsure, say Y.
+
 config SECURITY
 	bool "Enable different security models"
 	depends on SYSFS
